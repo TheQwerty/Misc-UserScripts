@@ -1,4 +1,4 @@
 Misc-UserScripts
 ================
 
-Miscellaneous UserScripts that unfit for their own repository.
+Miscellaneous UserScripts unfit for their own repository.
