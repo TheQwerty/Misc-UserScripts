@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Image Fitter
 // @description    Attempts to replicate Firefox's image-in-frame scaling.
-// @version        0.5
+// @version        0.6
 // @author         TheQwerty
 // @namespace      https://github.com/TheQwerty/Misc-UserScripts/raw/master/
 //
