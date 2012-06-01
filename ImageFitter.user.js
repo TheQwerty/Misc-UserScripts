@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Image Fitter
 // @description    Attempts to replicate Firefox's image-in-frame scaling.
-// @version        0.6
+// @version        0.7.0
 // @author         TheQwerty
 // @namespace      https://github.com/TheQwerty/Misc-UserScripts/raw/master/
 //
@@ -17,28 +17,47 @@
 			// Ignore frames that contain a single element that isn't an image.
 			var soleChild = window.document.body.children[0];
 			if (soleChild && soleChild.tagName === 'IMG') {
-
-				// Add styles to attempt to better fit image to client's view.
-				//	.fitWidth { max-width:100% !important; }
-				//	.fitHeight { max-height:100% !important; }
-				// TODO: Add way to toggle fitWidth and fitHeight separately.
-				// TODO: Determine which type of fitting is preferred for an image (when vscroll is acceptable, or hscroll preferred).
-
-				var style = document.createElement('style');
-				style.setAttribute('type', 'text\/css');
-				style.appendChild(document.createTextNode('.fitted { max-width:100% !important; max-height:100% !important; }'));
-				document.getElementsByTagName('head')[0].appendChild(style);
-
-				soleChild.classList.add('fitted');
+				// Add styles to head (failing back to body)
+				var head, style;
+				head = document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0];
+				if (!head) { return; }
+				var styles = [
+					'img { cursor: -webkit-zoom-in !important; cursor: -moz-zoom-in !important; }',
+					'.width, .height { cursor: -webkit-zoom-out !important; cursor : -moz-zoom-out !important; }',
+					'.width { max-width:100% !important; }',
+					'.height { max-height:100% !important; }'
+				];
+				style = document.createElement('style');
+				style.type = 'text/css';
+				style.innerHTML = styles.join('\r\n');
+				head.appendChild(style);
 				
-				// Add onclick to toggle fitting.
-				soleChild.onclick = function() {
-					if (this.classList.contains('fitted')) {
-						this.classList.remove('fitted');
+				// TODO: Determine optimal fitting instead of defaulting to width.
+				// Maybe determine image aspect ratio and then decide which fitting to apply.
+				soleChild.classList.add('width');
+				
+				// On click cycle: Fit Width > Full Size > Fit Both > Fit Height
+				soleChild.addEventListener('click', function(evt) {
+					//TODO: Detect modifier and prompt user to select.
+					var fitW = this.classList.contains('width');
+					var fitH = this.classList.contains('height');
+
+					if (fitW && fitH) {
+						// Fit Both > Fit Height
+						this.classList.remove('width');
+					} else if (fitW) {
+						// Fit Width > Full Size
+						this.classList.remove('width');
+					} else if (fitH) {
+						// Fit Height > Fit Width
+						this.classList.add('width');
+						this.classList.remove('height');
 					} else {
-						this.classList.add('fitted');
+						// Full Size > Fit Both
+						this.classList.add('width');
+						this.classList.add('height');
 					}
-				};
+				});
 			}
 		}
 	}
