@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Image Fitter
-// @description    Attempts to replicate Firefox's image-in-frame scaling.
-// @version        0.8.1
+// @description    Provides ability to fit framed-images to the window's size.
+// @version        0.8.2
 // @author         TheQwerty
 // @namespace      https://github.com/TheQwerty/Misc-UserScripts/raw/master/
 // @homepage       https://github.com/TheQwerty/Misc-UserScripts
