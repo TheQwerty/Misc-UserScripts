@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name           XY Read Favicon
 // @description    Changes the XYplorer Forum's icon to show state of unread messages.
-// @version        0.9.0
+// @version        0.9.1
 // @author         TheQwerty
 // @namespace      https://github.com/TheQwerty/Misc-UserScripts/raw/master/
 // @homepage       https://github.com/TheQwerty/Misc-UserScripts
 //
-// @include        http://www.xyplorer.com/xyfc/*
+// @include        /^https?://(?:www\.)?xyplorer\.com/xyfc/.*$/
+// @exclude        /^https?://(?:www\.)?xyplorer\.com/xyfc/posting\.php.*$/
 // ==/UserScript==
 
 (function() {
@@ -49,6 +50,7 @@
 	// Reload the page every 20 minutes.
 	var minuteDelay = 20;
 	setTimeout(function() { document.location.reload(); } , minuteDelay*60*1000);
+	console.log("XY Read Favicon: Added page reload after " + minuteDelay + " minutes.");
 })();
 
 
