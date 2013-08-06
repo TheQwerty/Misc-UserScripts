@@ -1,13 +1,12 @@
 // ==UserScript==
-// @name           XY Read Favicon
-// @description    Changes the XYplorer Forum's icon to show state of unread messages.
-// @version        0.9.1
+// @name           XYplorer Plus
+// @description    Changes the XYplorer Forum's icon to show state of unread messages and some quick links.
+// @version        0.9.9
 // @author         TheQwerty
 // @namespace      https://github.com/TheQwerty/Misc-UserScripts/raw/master/
 // @homepage       https://github.com/TheQwerty/Misc-UserScripts
 //
 // @include        /^https?://(?:www\.)?xyplorer\.com/xyfc/.*$/
-// @exclude        /^https?://(?:www\.)?xyplorer\.com/xyfc/posting\.php.*$/
 // ==/UserScript==
 
 (function() {
@@ -44,13 +43,65 @@
 		}
 	}
 
+	function addLinks() {
+		var sp = document.evaluate("//*[@id='wrapcentre']/p/span[last()]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
+		if (sp && sp.snapshotLength > 0) {
+			var spa = sp.snapshotItem();
+			while (spa.hasChildNodes()) { spa.removeChild(spa.firstChild); }
+
+			var addendums = [
+				[        "New", "./search.php?search_id=newposts"],
+				[     "Unread", "./search.php?search_id=unreadposts"],
+				[       "Mine", "./search.php?search_id=egosearch"],
+				[     "Alerts", "./ucp.php?i=main&mode=subscribed"],
+				[  "Bookmarks", "./ucp.php?i=main&mode=bookmarks"],
+				["Attachments", "./ucp.php?i=attachments&mode=attachments&sk=f&sd=d"]
+			];
+
+			var sep = document.createTextNode(" | ");
+
+			for (var i = 0; i < addendums.length; i++) {
+				var newLink = document.createElement("a");
+				newLink.href = addendums[i][1];
+				newLink.innerHTML = addendums[i][0];
+
+				if (i != 0) {
+					spa.appendChild(sep.cloneNode());
+				}
+				spa.appendChild(newLink);
+			}
+		}
+	}
+
+	function autoReload() {
+		// Reload the page every 10 minutes.
+		if (-1 < document.URL.search(/(search|index|viewforum)\.php/)) {
+			var minuteDelay = 10;
+
+			var sp = document.evaluate("//*[@id='datebar']/table/tbody", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
+			if (sp && sp.snapshotLength > 0) {
+				var spa = sp.snapshotItem();
+
+				var newTR = document.createElement('tr');
+				var newTD = document.createElement('td');
+				newTD.className = 'gensmall';
+				newTD.align = 'right';
+				newTD.colSpan = 2;
+				newTD.innerHTML = 'Page will automatically reload every ' + minuteDelay + (minuteDelay == 1 ? 'minute' : 'minutes.');
+				newTR.appendChild(newTD);
+				spa.appendChild(newTR);
+			}
+
+			setTimeout(function() { document.location.reload(); } , minuteDelay*60*1000);
+			console.log("XY Read Favicon: Added page reload after " + minuteDelay + " minutes.");
+		}
+	}
+
 
 	toggleIcon(hasUnread());
+	addLinks();
+	autoReload();
 
-	// Reload the page every 20 minutes.
-	var minuteDelay = 20;
-	setTimeout(function() { document.location.reload(); } , minuteDelay*60*1000);
-	console.log("XY Read Favicon: Added page reload after " + minuteDelay + " minutes.");
 })();
 
 
