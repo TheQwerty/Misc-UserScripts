@@ -87,7 +87,7 @@
 				newTD.className = 'gensmall';
 				newTD.align = 'right';
 				newTD.colSpan = 2;
-				newTD.innerHTML = 'Page will automatically reload every ' + minuteDelay + (minuteDelay == 1 ? 'minute' : 'minutes.');
+				newTD.innerHTML = 'Page will automatically reload every ' + minuteDelay + (minuteDelay == 1 ? ' minute.' : ' minutes.');
 				newTR.appendChild(newTD);
 				spa.appendChild(newTR);
 			}
