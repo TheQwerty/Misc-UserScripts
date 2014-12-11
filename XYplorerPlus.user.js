@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name           XYplorer Plus
 // @description    Changes the XYplorer Forum's icon to show state of unread messages and some quick links.
-// @version        0.9.9
+// @version        1.0.0
 // @author         TheQwerty
 // @namespace      https://github.com/TheQwerty/Misc-UserScripts/raw/master/
 // @homepage       https://github.com/TheQwerty/Misc-UserScripts
+// @grant          none
 //
-// @include        /^https?://(?:www\.)?xyplorer\.com/xyfc/.*$/
+// @match        *://*.xyplorer.com/xyfc/*
 // ==/UserScript==
 
 (function() {
