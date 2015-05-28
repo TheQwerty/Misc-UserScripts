@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           XYplorer Plus
 // @description    Changes the XYplorer Forum's icon to show state of unread messages and some quick links.
-// @version        1.0.0
+// @version        1.0.1
 // @author         TheQwerty
 // @namespace      https://github.com/TheQwerty/Misc-UserScripts/raw/master/
 // @homepage       https://github.com/TheQwerty/Misc-UserScripts
@@ -47,7 +47,7 @@
 	function addLinks() {
 		var sp = document.evaluate("//*[@id='wrapcentre']/p/span[last()]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
 		if (sp && sp.snapshotLength > 0) {
-			var spa = sp.snapshotItem();
+			var spa = sp.snapshotItem(0);
 			while (spa.hasChildNodes()) { spa.removeChild(spa.firstChild); }
 
 			var addendums = [
@@ -81,7 +81,7 @@
 
 			var sp = document.evaluate("//*[@id='datebar']/table/tbody", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
 			if (sp && sp.snapshotLength > 0) {
-				var spa = sp.snapshotItem();
+				var spa = sp.snapshotItem(0);
 
 				var newTR = document.createElement('tr');
 				var newTD = document.createElement('td');
